@@ -8,8 +8,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-export default class App extends Component {
-  render() {
+export default function App() {
     return (
       <div>
         <Router> 
@@ -27,7 +26,6 @@ export default class App extends Component {
         </Router>
       </div>
     )
-  }
 }
 // THEORY
 // React Component Cycle-"The series of events that happen from the mounting of a React component to its Unmounting"
@@ -36,4 +34,4 @@ export default class App extends Component {
 //  2. Update - Growth of your component
 //  3. Unmount - Death of the component
 // COMPULSORY : Watch theory explained by codewithharry in : https://www.youtube.com/watch?v=abjeWy4sZiU&list=PLu0W_9lII9agx66oZnT6IyhcMIbUMNMdt&index=34
-// 
+//              watch theory of hook explained by codewithharry in videoNo:38
