@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import InfiniteScroll from "react-infinite-scroll-component";
+import ScrollToTop from "react-scroll-to-top";
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
@@ -8,8 +9,9 @@ export default function News(props) {
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalResults, setTotalResults] = useState(0)
+    const [keyword, setKeyword] = useState('')
     const fetchMoreData = async() => {
-        const url = ` https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=330bd9cc3b4a42198fdea0251e43bea6&page=${page+1}`;
+        const url = ` https://newsapi.org/v2/top-headlines?q=${keyword}&language=en&category=${props.category}&apiKey=330bd9cc3b4a42198fdea0251e43bea6&page=${page+1}`;
         setPage(page+1) 
         let data = await fetch(url);
         let parseData = await data.json();
@@ -18,10 +20,13 @@ export default function News(props) {
       };
     
     const updateNews = async ()=>{
-        const url = ` https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=330bd9cc3b4a42198fdea0251e43bea6&page=${page}`;
+        props.setProgress(10);
+        const url = ` https://newsapi.org/v2/top-headlines?q=${keyword}&language=en&category=${props.category}&apiKey=330bd9cc3b4a42198fdea0251e43bea6&page=${page}`;
         setLoading(true);
         let data = await fetch(url);
+        props.setProgress(30);
         let parseData = await data.json();
+        props.setProgress(100);
         console.log(parseData);
         setArticles(parseData.articles)
         setTotalResults(parseData.totalResults)
@@ -33,6 +38,7 @@ export default function News(props) {
         return (
             <>
             <div className="container my-3">
+            <ScrollToTop smooth color="#6f00ff" />
                 <h1 className="text-center" style={{marginTop: '90px'}}>News Guru - Headlines from {(props.category)}</h1>
                 {loading && <Spinner/>}{/*show spinner component only when  loading is true*/}
                 
@@ -40,7 +46,7 @@ export default function News(props) {
                     dataLength={articles.length}
                     next={fetchMoreData}
                     hasMore={articles.length !== totalResults}
-                    loader={<Spinner/>}
+                    loader={loading && <Spinner />}
                 >
                 <div className="container">
                 <div className="row" >
@@ -58,11 +64,9 @@ export default function News(props) {
 }
 
 News.defaultProps = {
-    country: 'in',
     category: 'general',
 }
 
 News.propTypes = {
-    country: PropTypes.string,
     category: PropTypes.string,
 }
