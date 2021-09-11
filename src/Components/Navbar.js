@@ -1,9 +1,27 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from "react-router-dom";
 export default function Navbar(props){
+    const [mode, setMode] = useState('light')
+    const toggleMode = ()=>{
+        if(mode==='light'){
+        props.setNewsStyle({backgroundColor: '#2A0944', color: 'white'})
+        document.body.style.backgroundColor = "#2A0944";
+        props.setNewsItemStyle({backgroundColor: '#3B185F', color: '#FEC260'})
+        setMode('dark')
+        props.setBtnMode('light')
+        }
+        else{
+            props.setNewsStyle({backgroundColor: 'white', color: 'black'})
+        document.body.style.backgroundColor = "white";
+        props.setNewsItemStyle({backgroundColor: 'white', color: 'black'})
+        setMode('light')
+        props.setBtnMode('dark')
+        }
+    }
+
     return (
             <div>
-                <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+                <nav className={`navbar navbar-expand-lg fixed-top navbar-${mode} bg-${mode}`}>
                     <div className="container-fluid">
                         <a className="navbar-brand" href="/">News Guru</a>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,14 +43,10 @@ export default function Navbar(props){
                                         <li><Link className="dropdown-item" to="/technology">Technology</Link></li>
                                     </ul>
                                 </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Link</a>
-                                </li>
-                                
-                                <li className="nav-item">
-                                    <a className="nav-link disabled" href="/" tabIndex="-1" aria-disabled="true">Disabled</a>
-                                </li>
                             </ul>
+                            <div className="form-check form-switch">
+                                <input className="form-check-input" type="checkbox" onClick={toggleMode} id="flexSwitchCheckDefault"/>
+                            </div>
                             <form className="d-flex">
                                 <input className="form-control me-2"  type="search" placeholder="Search" aria-label="Search"/>
                                 <button className ="btn btn-outline-success" type ="submit">Search</button>
@@ -43,4 +57,3 @@ export default function Navbar(props){
             </div>
         )
 }
-
